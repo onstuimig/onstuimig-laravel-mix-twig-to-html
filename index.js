@@ -3,9 +3,9 @@ const { dirname, basename, extname, join, sep } = require("path");
 
 const assign = Object.assign;
 
-class TwigToHtml {
+class OnstuimigTwigToHtml {
   dependencies() {
-    return ["html-webpack-plugin", "html-loader", "twig-html-loader"];
+    return ["html-webpack-plugin", "html-loader", "onstuimig-twig-html-loader"];
   }
 
   register(config) {
@@ -68,7 +68,7 @@ class TwigToHtml {
           )
         },
         {
-          loader: "twig-html-loader",
+          loader: "onstuimig-twig-html-loader",
           options: options
         }
       ]
@@ -145,4 +145,4 @@ class TwigToHtml {
   }
 }
 
-mix.extend("twigToHtml", new TwigToHtml());
+mix.extend("twigToHtmlOnstuimig", new OnstuimigTwigToHtml());
