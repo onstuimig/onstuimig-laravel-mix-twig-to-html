@@ -108,7 +108,7 @@ class OnstuimigTwigToHtml {
         const isSubPath = this.config.fileBase !== dirname(item.template);
         const prefixPath = isSubPath
           ? dirname(item.template)
-              .split(sep)
+              .split("/")
               .pop()
           : "";
         const newFileName = `${basename(
