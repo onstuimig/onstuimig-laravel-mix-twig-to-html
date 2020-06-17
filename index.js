@@ -5,7 +5,7 @@ const assign = Object.assign;
 
 class OnstuimigTwigToHtml {
   dependencies() {
-    return ["html-webpack-plugin", "html-loader", "onstuimig-twig-html-loader"];
+    return ["html-replace-webpack-plugin", "html-webpack-plugin", "html-loader", "onstuimig-twig-html-loader"];
   }
 
   register(config) {
@@ -79,6 +79,7 @@ class OnstuimigTwigToHtml {
     if (!this.config.enabled) return;
 
     const HtmlWebpackPlugin = require("html-webpack-plugin");
+    const HtmlReplaceWebpackPlugin = require("html-replace-webpack-plugin");
     const { sync } = require("globby");
 
     const normaliseFileConfig = files =>
@@ -121,8 +122,8 @@ class OnstuimigTwigToHtml {
         };
       });
 
-    const createPages = pages =>
-      pages.map(page => {
+    const createPages = (pages) => {
+      const HtmlWebpackPluginMap = pages.map(page => {
         const options = assign(
           {
             ...page,
@@ -133,7 +134,18 @@ class OnstuimigTwigToHtml {
 
         return new HtmlWebpackPlugin(options);
       });
+	  
+      const HtmlReplaceWebpackPluginMap = pages.map(page => {
+        const options = assign(
+          [],
+          this.config.htmlReplace
+        );
 
+        return new HtmlReplaceWebpackPlugin(options);
+      });
+	  
+	  return Array.prototype.concat.apply(HtmlWebpackPluginMap, HtmlReplaceWebpackPluginMap);
+	}
     return createPages(
       addFilename(removeUnderscorePaths(normaliseFileConfig(this.config.files)))
     );
